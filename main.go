@@ -31,19 +31,19 @@ func checkWebsite(url string, sslExpiryThreshold time.Duration) (*WebsiteStatus,
 	duration := time.Since(start)
 
 	status := &WebsiteStatus{
-		URL: url,
+		URL:          url,
 		ResponseTime: duration,
-		StatusCode: response.StatusCode,
+		StatusCode:   response.StatusCode,
 	}
 
 	// if HTTPS, check the SSL certificate details
 	if response.Request.URL.Scheme == "https" {
 		// Establish a TLS connection to retrieve certificate info.
-		connection, error:= tls.Dial("tcp", response.Request.URL.Host+":443", &tls.Config{
+		connection, error := tls.Dial("tcp", response.Request.URL.Host+":443", &tls.Config{
 			// Verify the certificate properly in production
 			// Here we use InsecureSkipVerify to simply fetch the certificate details
 			InsecureSkipVerify: true,
-		}) 
+		})
 		if error != nil {
 			return status, error
 		}
@@ -91,7 +91,7 @@ func main() {
 		// "https://www.github.com",
 		// "http://example.com",
 		"http://techchantier.com",
-	} 
+	}
 
 	// Define a threshold for SSL certificate expiration (e.g., 30days).
 	sslExpiryThreshold := 30 * 24 * time.Hour
@@ -105,7 +105,7 @@ func main() {
 	checkWebsitesConcurrently(websites, sslExpiryThreshold)
 
 	// Run periodic checks.
-	for  range ticker.C {
+	for range ticker.C {
 		fmt.Println("\nPerforming scheduled check...")
 		checkWebsitesConcurrently(websites, sslExpiryThreshold)
 	}
