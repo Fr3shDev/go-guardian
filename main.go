@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"sync"
 	"time"
+
+	"github.com/common-nighthawk/go-figure"
 )
 
 type WebsiteStatus struct {
@@ -90,7 +92,7 @@ func main() {
 		// "https://www.google.com",
 		// "https://www.github.com",
 		// "http://example.com",
-		"http://techchantier.com",
+		"https://techchantier.com",
 	}
 
 	// Define a threshold for SSL certificate expiration (e.g., 30days).
@@ -100,7 +102,9 @@ func main() {
 	ticker := time.NewTicker(1 * time.Minute)
 	defer ticker.Stop()
 
-	fmt.Println("Starting website health monitoring...")
+	figure.NewColorFigure("Starting website health monitoring...", "", "green", true).Print()
+	// myFigure.Print()
+	// fmt.Println("Starting website health monitoring...")
 	// Perform an initial check.
 	checkWebsitesConcurrently(websites, sslExpiryThreshold)
 
